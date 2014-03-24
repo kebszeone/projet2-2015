@@ -101,17 +101,12 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
     glFrustum(-fW, fW, -fH, fH, zNear, zFar);
 }
 
-gint glarea_expose(GtkWidget *widget, GdkEventExpose *event)
+gboolean glarea_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
   GLfloat m[4][4];
 
   GtkGLArea *glarea = GTK_GL_AREA(widget);
   mesh_info *info = (mesh_info*) g_object_get_data (G_OBJECT (widget), "mesh_info");
-
-  /* draw only last expose */
-  if (event->count > 0) {
-    return TRUE;
-  }
 
   /* OpenGL calls can be done only if make_current returns true */
   if (gtk_gl_area_make_current(glarea)) {
@@ -332,8 +327,8 @@ gint show_lwobject(char const *lwobject_name)
 			GDK_BUTTON_RELEASE_MASK|
 			GDK_POINTER_MOTION_MASK|
 			GDK_POINTER_MOTION_HINT_MASK);
-  g_signal_connect (G_OBJECT(glarea), "expose-event",
-                    G_CALLBACK(glarea_expose), NULL);
+  g_signal_connect (G_OBJECT(glarea), "draw",
+                    G_CALLBACK(glarea_draw), NULL);
   g_signal_connect (G_OBJECT(glarea), "motion-notify-event",
                     G_CALLBACK(glarea_motion_notify), NULL);
   g_signal_connect (G_OBJECT(glarea), "button-press-event",
