@@ -699,7 +699,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 	  if (gdk_pointer_grab(gl_area->window, FALSE, 0, NULL, NULL, GDK_CURRENT_TIME) == 0)
 	    {
 	      gtk_widget_grab_focus(gl_area);
-	      if (gtk_gl_area_make_current(GTK_GL_AREA(gl_area)))
+	      if (ggla_widget_make_current(GGLA_WIDGET(gl_area)))
 		{
 		  if (XMesaSetFXmode((XMESA_FX_FULLSCREEN)))
 		    {
@@ -716,7 +716,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 
   if (fullscreenwidget == gl_area)
     {
-      if (gtk_gl_area_make_current(GTK_GL_AREA(gl_area)))
+      if (ggla_widget_make_current(GGLA_WIDGET(gl_area)))
 	XMesaSetFXmode(XMESA_FX_WINDOW);
 
       gdk_keyboard_ungrab(GDK_CURRENT_TIME);
@@ -736,7 +736,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 gint init(GtkWidget *widget)
 {
   /* OpenGL functions can be called only if makecurrent returns true */
-  if (gtk_gl_area_make_current(GTK_GL_AREA(widget))) {
+  if (ggla_widget_make_current(GGLA_WIDGET(widget))) {
 
     /* set viewport */
     GtkAllocation allocation;
@@ -750,11 +750,11 @@ gint init(GtkWidget *widget)
 /* When widget is exposed it's contents are redrawn. */
 gboolean  draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
-  if (gtk_gl_area_make_current(GTK_GL_AREA(widget)))
+  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
     game_render();
 
   /* Swap backbuffer to front */
-  gtk_gl_area_swap_buffers(GTK_GL_AREA(widget));
+  ggla_widget_swap_buffers(GGLA_WIDGET(widget));
 
   return TRUE;
 }
@@ -763,7 +763,7 @@ gboolean  draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 gint reshape(GtkWidget *widget, GdkEventConfigure *event)
 {
   /* OpenGL functions can be called only if make_current returns true */
-  if (gtk_gl_area_make_current(GTK_GL_AREA(widget)))
+  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
     {
       GtkAllocation allocation;
       gtk_widget_get_allocation (widget, &allocation);
@@ -849,16 +849,16 @@ int main(int argc, char **argv)
   /* Attribute list for gtkglarea widget. Specifies a
      list of Boolean attributes and enum/integer
      attribute/value pairs. The last attribute must be
-     GDK_GL_NONE. See glXChooseVisual manpage for further
+     GGLA_NONE. See glXChooseVisual manpage for further
      explanation.
   */
   int attrlist[] = {
-    GDK_GL_RGBA,
-    GDK_GL_RED_SIZE,1,
-    GDK_GL_GREEN_SIZE,1,
-    GDK_GL_BLUE_SIZE,1,
-    GDK_GL_DOUBLEBUFFER,
-    GDK_GL_NONE
+    GGLA_RGBA,
+    GGLA_RED_SIZE,1,
+    GGLA_GREEN_SIZE,1,
+    GGLA_BLUE_SIZE,1,
+    GGLA_DOUBLEBUFFER,
+    GGLA_NONE
   };
 
 #ifdef FULLSCREEN_MESA_3DFX
@@ -870,7 +870,7 @@ int main(int argc, char **argv)
   gtk_init(&argc, &argv);
 
   /* Check if OpenGL (GLX extension) is supported. */
-  if (gdk_gl_query() == FALSE) {
+  if (ggla_query() == FALSE) {
     g_print("OpenGL not supported\n");
     return 0;
   }
@@ -892,7 +892,7 @@ int main(int argc, char **argv)
 
 
   /* Create new OpenGL widget. */
-  glarea = GTK_WIDGET(gtk_gl_area_new(attrlist));
+  glarea = GTK_WIDGET(ggla_widget_new(attrlist));
   /* Events for widget must be set before X Window is created */
   gtk_widget_set_events(GTK_WIDGET(glarea),
 			GDK_EXPOSURE_MASK|
