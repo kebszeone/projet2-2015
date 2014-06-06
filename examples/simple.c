@@ -24,7 +24,7 @@
 gint init(GtkWidget *widget)
 {
   /* OpenGL functions can be called only if make_current returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
+  if (ggla_area_make_current(GGLA_AREA(widget)))
     {
       GtkAllocation allocation;
       gtk_widget_get_allocation (widget, &allocation);
@@ -43,7 +43,7 @@ gint init(GtkWidget *widget)
 gboolean draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
   /* OpenGL functions can be called only if make_current returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
+  if (ggla_area_make_current(GGLA_AREA(widget)))
     {
 
       /* Draw simple triangle */
@@ -57,7 +57,7 @@ gboolean draw (GtkWidget *widget, cairo_t *cr, gpointer data)
       glEnd();
 
       /* Swap backbuffer to front */
-      ggla_widget_swap_buffers(GGLA_WIDGET(widget));
+      ggla_area_swap_buffers(GGLA_AREA(widget));
 
     }
 
@@ -68,7 +68,7 @@ gboolean draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 gint reshape(GtkWidget *widget, GdkEventConfigure *event)
 {
   /* OpenGL functions can be called only if make_current returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
+  if (ggla_area_make_current(GGLA_AREA(widget)))
     {
       GtkAllocation allocation;
       gtk_widget_get_allocation (widget, &allocation);
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 
 
   /* Create new OpenGL widget. */
-  glarea = GTK_WIDGET(ggla_widget_new(attrlist));
+  glarea = GTK_WIDGET(ggla_area_new(attrlist));
   /* Events for widget must be set before X Window is created */
   gtk_widget_set_events(GTK_WIDGET(glarea),
 			GDK_EXPOSURE_MASK|

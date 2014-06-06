@@ -699,7 +699,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 	  if (gdk_pointer_grab(gl_area->window, FALSE, 0, NULL, NULL, GDK_CURRENT_TIME) == 0)
 	    {
 	      gtk_widget_grab_focus(gl_area);
-	      if (ggla_widget_make_current(GGLA_WIDGET(gl_area)))
+	      if (ggla_area_make_current(GGLA_AREA(gl_area)))
 		{
 		  if (XMesaSetFXmode((XMESA_FX_FULLSCREEN)))
 		    {
@@ -716,7 +716,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 
   if (fullscreenwidget == gl_area)
     {
-      if (ggla_widget_make_current(GGLA_WIDGET(gl_area)))
+      if (ggla_area_make_current(GGLA_AREA(gl_area)))
 	XMesaSetFXmode(XMESA_FX_WINDOW);
 
       gdk_keyboard_ungrab(GDK_CURRENT_TIME);
@@ -736,7 +736,7 @@ gint switch_fullscreen(GtkWidget *gl_area)
 gint init(GtkWidget *widget)
 {
   /* OpenGL functions can be called only if makecurrent returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget))) {
+  if (ggla_area_make_current(GGLA_AREA(widget))) {
 
     /* set viewport */
     GtkAllocation allocation;
@@ -750,11 +750,11 @@ gint init(GtkWidget *widget)
 /* When widget is exposed it's contents are redrawn. */
 gboolean  draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
-  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
+  if (ggla_area_make_current(GGLA_AREA(widget)))
     game_render();
 
   /* Swap backbuffer to front */
-  ggla_widget_swap_buffers(GGLA_WIDGET(widget));
+  ggla_area_swap_buffers(GGLA_AREA(widget));
 
   return TRUE;
 }
@@ -763,7 +763,7 @@ gboolean  draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 gint reshape(GtkWidget *widget, GdkEventConfigure *event)
 {
   /* OpenGL functions can be called only if make_current returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget)))
+  if (ggla_area_make_current(GGLA_AREA(widget)))
     {
       GtkAllocation allocation;
       gtk_widget_get_allocation (widget, &allocation);
@@ -892,7 +892,7 @@ int main(int argc, char **argv)
 
 
   /* Create new OpenGL widget. */
-  glarea = GTK_WIDGET(ggla_widget_new(attrlist));
+  glarea = GTK_WIDGET(ggla_area_new(attrlist));
   /* Events for widget must be set before X Window is created */
   gtk_widget_set_events(GTK_WIDGET(glarea),
 			GDK_EXPOSURE_MASK|

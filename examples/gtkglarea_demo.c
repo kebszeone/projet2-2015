@@ -19,9 +19,9 @@
  ******************************************************************************
  *
  * This is a short, heavily commented demo program designed to help
- * get you started using the GglaWidget widget in your gtk programs.
+ * get you started using the GglaArea widget in your gtk programs.
  *
- * The program creates a window with a GglaWidget widget and a quit button.
+ * The program creates a window with a GglaArea widget and a quit button.
  * Some commonly used callbacks are registered, but nothing is drawn into
  * the window.
  *
@@ -103,11 +103,11 @@ GtkWidget* create_glarea (void) {
     return NULL;
   }
 
-  /* Now, create the GglaWidget using the attribute list that  */
+  /* Now, create the GglaArea using the attribute list that  */
   /* we defined above.                                        */
 
-  if ((glarea = ggla_widget_new(attrlist)) == NULL) {
-    g_print("Error creating GglaWidget!\n");
+  if ((glarea = ggla_area_new(attrlist)) == NULL) {
+    g_print("Error creating GglaArea!\n");
     return NULL;
   }
 
@@ -172,7 +172,7 @@ GtkWidget* create_glarea (void) {
   /* destroy - The window has received a destroy event, this  */
   /*           is where you should do any cleanup that needs  */
   /*           to happen, such as de-allocating data objects  */
-  /*           that you have added to your GglaWidget.         */
+  /*           that you have added to your GglaArea.         */
 
   g_signal_connect (G_OBJECT(glarea), "destroy",
                     G_CALLBACK (glarea_destroy), NULL);
@@ -187,7 +187,7 @@ GtkWidget* create_glarea (void) {
 /*                                                                           */
 /* Function: glarea_button_release (GtkWidget*, GdkEventButton*)             */
 /*                                                                           */
-/* This function handles button-release events for the GglaWidget into which  */
+/* This function handles button-release events for the GglaArea into which  */
 /* we are drawing.                                                           */
 /*                                                                           */
 /*****************************************************************************/
@@ -223,7 +223,7 @@ gint glarea_button_release (GtkWidget* widget, GdkEventButton* event) {
 /*                                                                           */
 /* Function: glarea_button_press (GtkWidget*, GdkEventButton*)               */
 /*                                                                           */
-/* This function handles button-press events for the GglaWidget into which we */
+/* This function handles button-press events for the GglaArea into which we */
 /* are drawing.                                                              */
 /*                                                                           */
 /*****************************************************************************/
@@ -258,7 +258,7 @@ gint glarea_button_press (GtkWidget* widget, GdkEventButton* event) {
 /*                                                                           */
 /* Function: glarea_motion_notify (GtkWidget*, GdkEventMotion*)              */
 /*                                                                           */
-/* This function handles motion events for the GglaWidget into which we are   */
+/* This function handles motion events for the GglaArea into which we are   */
 /* drawing                                                                   */
 /*                                                                           */
 /*****************************************************************************/
@@ -302,7 +302,7 @@ gint glarea_motion_notify (GtkWidget* widget, GdkEventMotion* event) {
 /*                                                                           */
 /* Function: glarea_draw (GtkWidget*, cairo_t *cr, gpointer user_data)       */
 /*                                                                           */
-/* This is the function that should render your scene to the GglaWidget. It   */
+/* This is the function that should render your scene to the GglaArea. It   */
 /* can be used as a callback to the 'draw' signal.                           */
 /*                                                                           */
 /*****************************************************************************/
@@ -311,10 +311,10 @@ gboolean glarea_draw (GtkWidget* widget, cairo_t *cr, gpointer user_data) {
 
   g_print ("Draw Signal\n");
 
-  /* ggla_widget_make_current MUST be called before rendering */
-  /* into the GglaWidget.                                      */
+  /* ggla_area_make_current MUST be called before rendering */
+  /* into the GglaArea.                                      */
 
-  if (ggla_widget_make_current(GGLA_WIDGET(widget))) {
+  if (ggla_area_make_current(GGLA_AREA(widget))) {
 
     /* Clear the drawing color buffer and depth buffers */
     /* before drawing.                                  */
@@ -330,7 +330,7 @@ gboolean glarea_draw (GtkWidget* widget, cairo_t *cr, gpointer user_data) {
     /* book if you don't already have an understanding of   */
     /* single vs. double buffered windows.                  */
 
-    ggla_widget_swap_buffers (GGLA_WIDGET(widget));
+    ggla_area_swap_buffers (GGLA_AREA(widget));
 
   }
 
@@ -343,7 +343,7 @@ gboolean glarea_draw (GtkWidget* widget, cairo_t *cr, gpointer user_data) {
 /* Function: glarea_reshape (GtkWidget*, GdkEventConfigure*)                 */
 /*                                                                           */
 /* This function performs the operations needed to maintain the viewing area */
-/* of the GglaWidget. This should be called whenever the size of the area     */
+/* of the GglaArea. This should be called whenever the size of the area     */
 /* is changed.                                                               */
 /*                                                                           */
 /*****************************************************************************/
@@ -357,10 +357,10 @@ gint glarea_reshape (GtkWidget* widget, GdkEventConfigure* event) {
 
   g_print ("Reshape Event\n");
 
-  /* ggla_widget_make_current MUST be called before rendering */
-  /* into the GglaWidget.                                      */
+  /* ggla_area_make_current MUST be called before rendering */
+  /* into the GglaArea.                                      */
 
-  if (ggla_widget_make_current (GGLA_WIDGET(widget))) {
+  if (ggla_area_make_current (GGLA_AREA(widget))) {
 
     /* This is an example 2D reshape function. Writing reshape */
     /* functions is beyond the scope of this demo. Check the   */
@@ -383,7 +383,7 @@ gint glarea_reshape (GtkWidget* widget, GdkEventConfigure* event) {
 /*                                                                           */
 /* Function: glarea_init (GtkWidget*)                                        */
 /*                                                                           */
-/* This function is a callback for the realization of the GglaWidget widtget. */
+/* This function is a callback for the realization of the GglaArea widtget. */
 /* You should do any OpenGL initialization here.                             */
 /*                                                                           */
 /*****************************************************************************/
@@ -392,10 +392,10 @@ gint glarea_init (GtkWidget* widget) {
 
   g_print ("Realize Event\n");
 
-  /* ggla_widget_make_current MUST be called before rendering */
-  /* into the GglaWidget.                                      */
+  /* ggla_area_make_current MUST be called before rendering */
+  /* into the GglaArea.                                      */
 
-  if (ggla_widget_make_current (GGLA_WIDGET(widget))) {
+  if (ggla_area_make_current (GGLA_AREA(widget))) {
 
     /* Insert your OpenGL initialization code here */
 
@@ -409,8 +409,8 @@ gint glarea_init (GtkWidget* widget) {
 /*                                                                           */
 /* Function: glarea_destroy (GtkWidget*)                                     */
 /*                                                                           */
-/* This function is a callback for the main GglaWidget. It deletes should     */
-/* delete any data structures stored in the GglaWidget.                       */
+/* This function is a callback for the main GglaArea. It deletes should     */
+/* delete any data structures stored in the GglaArea.                       */
 /*                                                                           */
 /*****************************************************************************/
 
@@ -430,7 +430,7 @@ gint glarea_destroy (GtkWidget* widget) {
 /* Function: main (int, char**)                                              */
 /*                                                                           */
 /* The main function sets up our GUI and calls the functions needed to       */
-/* create our GglaWidget.                                                     */
+/* create our GglaArea.                                                     */
 /*                                                                           */
 /*****************************************************************************/
 
@@ -462,7 +462,7 @@ int main (int argc, char** argv) {
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gtk_window_set_title (GTK_WINDOW(window), "GglaWidget Demo");
+  gtk_window_set_title (GTK_WINDOW(window), "GglaArea Demo");
 
   g_signal_connect (G_OBJECT(window), "delete-event",
                     G_CALLBACK(gtk_main_quit), NULL);

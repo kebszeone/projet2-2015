@@ -1,4 +1,4 @@
-GglaWidget widget is derived from GtkDrawingArea widget.
+GglaArea widget is derived from GtkDrawingArea widget.
 
 examples/simple.c is a good starting point.
 
@@ -6,9 +6,9 @@ examples/simple.c is a good starting point.
 ---------------------------------------------------------
 C SPECIFICATION
 
-GtkWidget* ggla_widget_new(int *attrList)
-GtkWidget* ggla_widget_share_new(int *attrList, GglaWidget *share)
-GtkWidget* ggla_widget_new_vargs(GglaWidget *share, ...)
+GtkWidget* ggla_area_new(int *attrList)
+GtkWidget* ggla_area_share_new(int *attrList, GglaArea *share)
+GtkWidget* ggla_area_new_vargs(GglaArea *share, ...)
 
 PARAMETERS
 
@@ -29,14 +29,14 @@ DESCRIPTION
 	requested type and GLX context is created for this widget. You
 	can't do opengl calls on widget until it has X window. X window
 	is not created until widget is realized.
-	ggla_widget_new_vargs takes attrList as variable arguments,
+	ggla_area_new_vargs takes attrList as variable arguments,
 	last argument must still be zero.
 
 ---------------------------------------------------------
 
 C SPECIFICATION
 
-gint ggla_widget_make_current(GglaWidget *gl_area)
+gint ggla_area_make_current(GglaArea *gl_area)
 
 PARAMETERS
 
@@ -44,20 +44,20 @@ gl_area
 	Specifies a gtkglarea widget.
 
 DESCRIPTION
-	ggla_widget_make_current must be called before rendering into
+	ggla_area_make_current must be called before rendering into
 	OpenGL widget, it returns TRUE if rendering to widget is
 	possible. Rendering is not possible if widget is not
-	GglaWidget widget or widget is not realized.
+	GglaArea widget or widget is not realized.
 
 ---------------------------------------------------------
 
 C SPECIFICATION
-void ggla_widget_swap_buffers(GglaWidget *gl_area)
+void ggla_area_swap_buffers(GglaArea *gl_area)
 
 PARAMETERS
 
 gl_area
-	Specifies a GglaWidget widget.
+	Specifies a GglaArea widget.
 
 DESCRIPTION
 	Wrapper around ggla_swap_buffers. Promotes contents of back buffer

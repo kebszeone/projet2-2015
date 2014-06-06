@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __GGLA_WIDGET_H__
-#define __GGLA_WIDGET_H__
+#ifndef __GGLA_AREA_H__
+#define __GGLA_AREA_H__
 
 #include <gdk/gdk.h>
 #include <gtkgl/gdkgl.h>
@@ -27,42 +27,42 @@
 
 G_BEGIN_DECLS
 
-#define GGLA_TYPE_WIDGET            (ggla_widget_get_type())
-#define GGLA_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GGLA_TYPE_WIDGET, GglaWidget))
-#define GGLA_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST (klass, GGLA_TYPE_WIDGET, GglaWidgetClass))
+#define GGLA_TYPE_WIDGET            (ggla_area_get_type())
+#define GGLA_AREA(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GGLA_TYPE_WIDGET, GglaArea))
+#define GGLA_AREA_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST (klass, GGLA_TYPE_WIDGET, GglaAreaClass))
 #define GGLA_IS_WIDGET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GGLA_TYPE_WIDGET))
 #define GGLA_IS_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GGLA_TYPE_WIDGET))
-#define GGLA_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GGLA_TYPE_WIDGET, GglaWidget))
+#define GGLA_AREA_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GGLA_TYPE_WIDGET, GglaArea))
 
 
-typedef struct _GglaWidget       GglaWidget;
-typedef struct _GglaWidgetClass  GglaWidgetClass;
+typedef struct _GglaArea       GglaArea;
+typedef struct _GglaAreaClass  GglaAreaClass;
 
 
-struct _GglaWidget
+struct _GglaArea
 {
   GtkDrawingArea  darea;
   GglaContext *glcontext;
 };
 
-struct _GglaWidgetClass
+struct _GglaAreaClass
 {
   GtkDrawingAreaClass parent_class;
 };
 
-GType      ggla_widget_get_type   (void);
-GtkWidget* ggla_widget_new        (int       *attrList);
-GtkWidget* ggla_widget_share_new  (int       *attrList,
-                                   GglaWidget *share);
-GtkWidget* ggla_widget_new_vargs  (GglaWidget *share,
+GType      ggla_area_get_type     (void);
+GtkWidget* ggla_area_new          (int        *attrList);
+GtkWidget* ggla_area_share_new    (int        *attrList,
+                                   GglaArea *share);
+GtkWidget* ggla_area_new_vargs    (GglaArea *share,
 				   ...);
 
 
-gint       ggla_widget_make_current(GglaWidget *glarea);
+gint       ggla_area_make_current (GglaArea *glarea);
 
-void       ggla_widget_swap_buffers(GglaWidget *glarea);
+void       ggla_area_swap_buffers (GglaArea *glarea);
 
 
 G_END_DECLS
 
-#endif /* __GGLA_WIDGET_H__ */
+#endif /* __GGLA_AREA_H__ */

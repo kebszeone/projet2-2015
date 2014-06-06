@@ -40,16 +40,16 @@
 
 
 
-6. Can I use gdk_gl functions and GglaWidget widget in the same program?
+6. Can I use gdk_gl functions and GglaArea widget in the same program?
 
-    Yes, just remember that ggla_widget_make_current() makes the GglaWidget
+    Yes, just remember that ggla_area_make_current() makes the GglaArea
     widget's internal context the current context and leaves it so.
 
 
 
-7. How do I capture keypress events for GglaWidget widget?
+7. How do I capture keypress events for GglaArea widget?
 
-    This is not a GglaWidget specific question, but here is a solution:
+    This is not a GglaArea specific question, but here is a solution:
 
     - Set an event mask:
          gtk_widget_set_events(glarea, GDK_KEY_PRESS_MASK);

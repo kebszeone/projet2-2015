@@ -105,11 +105,11 @@ gboolean glarea_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
   GLfloat m[4][4];
 
-  GglaWidget *glarea = GGLA_WIDGET(widget);
+  GglaArea *glarea = GGLA_AREA(widget);
   mesh_info *info = (mesh_info*) g_object_get_data (G_OBJECT (widget), "mesh_info");
 
   /* OpenGL calls can be done only if make_current returns true */
-  if (ggla_widget_make_current(glarea)) {
+  if (ggla_area_make_current(glarea)) {
     /* basic initialization */
     if (info->do_init == TRUE) {
       initgl();
@@ -134,7 +134,7 @@ gboolean glarea_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
     lw_object_show(info->lwobject);
 
     /* swap backbuffer to front */
-    ggla_widget_swap_buffers(glarea);
+    ggla_area_swap_buffers(glarea);
   }
 
   return TRUE;
@@ -143,7 +143,7 @@ gboolean glarea_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data)
 gint glarea_configure(GtkWidget *widget, GdkEventConfigure *event)
 {
   /* OpenGL calls can be done only if make_current returns true */
-  if (ggla_widget_make_current(GGLA_WIDGET(widget))) {
+  if (ggla_area_make_current(GGLA_AREA(widget))) {
       GtkAllocation allocation;
       gtk_widget_get_allocation (widget, &allocation);
       glViewport(0, 0, allocation.width, allocation.height);
@@ -306,7 +306,7 @@ gint show_lwobject(char const *lwobject_name)
 
 
   /* create new OpenGL widget */
-  glarea = ggla_widget_new_vargs(NULL, /* no sharing */
+  glarea = ggla_area_new_vargs(NULL, /* no sharing */
 				 GGLA_RGBA,
 				 GGLA_RED_SIZE,1,
 				 GGLA_GREEN_SIZE,1,
@@ -316,7 +316,7 @@ gint show_lwobject(char const *lwobject_name)
 				 GGLA_NONE);  /* last argument must be GDK_GL_NONE */
   if (glarea == NULL) {
     lw_object_free(lwobject);
-    g_print("Can't create GglaWidget widget\n");
+    g_print("Can't create GglaArea widget\n");
     return FALSE;
   }
   /* set up events and signals for OpenGL widget */
